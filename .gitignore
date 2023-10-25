@@ -1,2 +1,12 @@
+# Pycharm
 .idea
+
+# Config
 *.json
+
+# Terraform
+*.tfstate*
+.terraform
+terraform
+*.hcl
+*.zip
