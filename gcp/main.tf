@@ -39,7 +39,7 @@ resource "google_storage_bucket_object" "function_source" {
 resource "google_cloudfunctions_function" "sla_monitor_function" {
   name                  = "sla-monitor"
   description           = "Check for service outages and notify"
-  available_memory_mb   = 128
+  available_memory_mb   = 256
   max_instances         = 1
   min_instances         = 0
   timeout               = 60
