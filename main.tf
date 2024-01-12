@@ -1,8 +1,3 @@
-variable "project" {
-  type        = string
-  description = "Google project ID"
-}
-
 terraform {
   required_providers {
     google = {
@@ -14,7 +9,7 @@ terraform {
 
 provider "google" {
   credentials = file("sla-monitor.json")
-  project     = var.project
+  project     = jsondecode(file("sla-monitor.json")).project_id
   region      = "us-central1"
 }
 
