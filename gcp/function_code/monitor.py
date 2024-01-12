@@ -25,6 +25,8 @@ ORDER BY name;"""
 INSERT_LOG_QUERY = """INSERT INTO `sla.log` (service_id, status, time)
 VALUES (@service_id, @status, @time);"""
 
+HISTORY_LOOKUP_QUERY = """SELECT status from `sla.log` where service_id = @service_id ORDER BY time desc limit 10"""
+
 
 class ACTIONS:
     """Possible check actions"""
@@ -85,6 +87,7 @@ def run() -> None:
             }
         ],
     }
+
     down = 0
     client = bigquery.Client()
     for service in client.query(GET_SERVICES_QUERY).result():
@@ -118,6 +121,19 @@ def run() -> None:
 
         down += 1
         notification_data["embeds"][0]["description"] += f"{service['name']}\n"
+
+        if str(service["owner_discord_id"]) not in cfg["always_ping"]:
+            last_10 = [
+                h["status"]
+                for h in client.query(
+                    HISTORY_LOOKUP_QUERY,
+                    bigquery.QueryJobConfig(
+                        query_parameters=[bigquery.ScalarQueryParameter("service_id", "INTEGER", service["id"])]
+                    ),
+                ).result()
+            ]
+            if True not in last_10 and datetime.datetime.utcnow().minute % 10 > 0:
+                continue
 
         if (user := f"<@{service['owner_discord_id']}> ") not in notification_data["content"]:
             notification_data["content"] += user
