@@ -4,6 +4,7 @@
 # Config
 *.json
 !example.sla-monitor.json
+!example.config.json
 
 # Terraform
 *.tfstate*

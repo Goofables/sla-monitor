@@ -1,0 +1,6 @@
+{
+  "webhook": "https://discordapp.com/api/webhooks/####/XXXXXX",
+  "always_ping": [
+    "your_discord_id"
+  ]
+}
