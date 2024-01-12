@@ -1,8 +1,9 @@
 # Pycharm
-.idea
+../.idea
 
 # Config
 *.json
+!example.sla-monitor.json
 
 # Terraform
 *.tfstate*
